@@ -1,8 +1,8 @@
-import 'package:first_week_demo/app_theme/text_style.dart';
 import 'package:flutter/material.dart';
 
 class AppTextForm {
   static getTextFormField({
+    required BuildContext context,
     required String hintText,
     required IconData icon,
     required TextEditingController controller,
@@ -23,7 +23,7 @@ class AppTextForm {
         textInputAction: isLast ? TextInputAction.done : TextInputAction.next,
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: AppTextStyle.thinText(),
+          hintStyle: Theme.of(context).textTheme.bodySmall,
           prefixIcon: Icon(
             icon,
             size: 20,
@@ -33,6 +33,7 @@ class AppTextForm {
 
   static getTextField(
           {required String hintText,
+            required BuildContext context,
           IconData? icon,
           bool isNumber = false,
           required TextEditingController controller,
@@ -48,10 +49,10 @@ class AppTextForm {
           textInputAction: TextInputAction.done,
           decoration: icon == null
               ? InputDecoration(
-                  hintText: hintText, hintStyle: AppTextStyle.thinText())
+                  hintText: hintText, hintStyle: Theme.of(context).textTheme.bodySmall)
               : InputDecoration(
                   hintText: hintText,
-                  hintStyle: AppTextStyle.thinText(),
+                  hintStyle:Theme.of(context).textTheme.bodySmall,
                   prefixIcon: Icon(
                     icon,
                     size: 20,

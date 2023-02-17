@@ -1,4 +1,4 @@
-import 'package:first_week_demo/product/product.dart';
+import 'package:first_week_demo/product/product_model/product.dart';
 import 'package:flutter/cupertino.dart';
 
 enum ProductsStates {

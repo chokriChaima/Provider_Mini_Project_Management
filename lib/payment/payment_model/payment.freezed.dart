@@ -21,6 +21,7 @@ Payment _$PaymentFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Payment {
   double get paymentAmount => throw _privateConstructorUsedError;
+  String get shoppingCartID => throw _privateConstructorUsedError;
   String get cardNumber => throw _privateConstructorUsedError;
   String get cardHolderName => throw _privateConstructorUsedError;
 
@@ -34,7 +35,11 @@ abstract class $PaymentCopyWith<$Res> {
   factory $PaymentCopyWith(Payment value, $Res Function(Payment) then) =
       _$PaymentCopyWithImpl<$Res, Payment>;
   @useResult
-  $Res call({double paymentAmount, String cardNumber, String cardHolderName});
+  $Res call(
+      {double paymentAmount,
+      String shoppingCartID,
+      String cardNumber,
+      String cardHolderName});
 }
 
 /// @nodoc
@@ -51,6 +56,7 @@ class _$PaymentCopyWithImpl<$Res, $Val extends Payment>
   @override
   $Res call({
     Object? paymentAmount = null,
+    Object? shoppingCartID = null,
     Object? cardNumber = null,
     Object? cardHolderName = null,
   }) {
@@ -59,6 +65,10 @@ class _$PaymentCopyWithImpl<$Res, $Val extends Payment>
           ? _value.paymentAmount
           : paymentAmount // ignore: cast_nullable_to_non_nullable
               as double,
+      shoppingCartID: null == shoppingCartID
+          ? _value.shoppingCartID
+          : shoppingCartID // ignore: cast_nullable_to_non_nullable
+              as String,
       cardNumber: null == cardNumber
           ? _value.cardNumber
           : cardNumber // ignore: cast_nullable_to_non_nullable
@@ -78,7 +88,11 @@ abstract class _$$_PaymentCopyWith<$Res> implements $PaymentCopyWith<$Res> {
       __$$_PaymentCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({double paymentAmount, String cardNumber, String cardHolderName});
+  $Res call(
+      {double paymentAmount,
+      String shoppingCartID,
+      String cardNumber,
+      String cardHolderName});
 }
 
 /// @nodoc
@@ -92,6 +106,7 @@ class __$$_PaymentCopyWithImpl<$Res>
   @override
   $Res call({
     Object? paymentAmount = null,
+    Object? shoppingCartID = null,
     Object? cardNumber = null,
     Object? cardHolderName = null,
   }) {
@@ -100,6 +115,10 @@ class __$$_PaymentCopyWithImpl<$Res>
           ? _value.paymentAmount
           : paymentAmount // ignore: cast_nullable_to_non_nullable
               as double,
+      shoppingCartID: null == shoppingCartID
+          ? _value.shoppingCartID
+          : shoppingCartID // ignore: cast_nullable_to_non_nullable
+              as String,
       cardNumber: null == cardNumber
           ? _value.cardNumber
           : cardNumber // ignore: cast_nullable_to_non_nullable
@@ -117,6 +136,7 @@ class __$$_PaymentCopyWithImpl<$Res>
 class _$_Payment implements _Payment {
   _$_Payment(
       {required this.paymentAmount,
+      required this.shoppingCartID,
       required this.cardNumber,
       required this.cardHolderName});
 
@@ -126,13 +146,15 @@ class _$_Payment implements _Payment {
   @override
   final double paymentAmount;
   @override
+  final String shoppingCartID;
+  @override
   final String cardNumber;
   @override
   final String cardHolderName;
 
   @override
   String toString() {
-    return 'Payment(paymentAmount: $paymentAmount, cardNumber: $cardNumber, cardHolderName: $cardHolderName)';
+    return 'Payment(paymentAmount: $paymentAmount, shoppingCartID: $shoppingCartID, cardNumber: $cardNumber, cardHolderName: $cardHolderName)';
   }
 
   @override
@@ -142,6 +164,8 @@ class _$_Payment implements _Payment {
             other is _$_Payment &&
             (identical(other.paymentAmount, paymentAmount) ||
                 other.paymentAmount == paymentAmount) &&
+            (identical(other.shoppingCartID, shoppingCartID) ||
+                other.shoppingCartID == shoppingCartID) &&
             (identical(other.cardNumber, cardNumber) ||
                 other.cardNumber == cardNumber) &&
             (identical(other.cardHolderName, cardHolderName) ||
@@ -150,8 +174,8 @@ class _$_Payment implements _Payment {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, paymentAmount, cardNumber, cardHolderName);
+  int get hashCode => Object.hash(
+      runtimeType, paymentAmount, shoppingCartID, cardNumber, cardHolderName);
 
   @JsonKey(ignore: true)
   @override
@@ -170,6 +194,7 @@ class _$_Payment implements _Payment {
 abstract class _Payment implements Payment {
   factory _Payment(
       {required final double paymentAmount,
+      required final String shoppingCartID,
       required final String cardNumber,
       required final String cardHolderName}) = _$_Payment;
 
@@ -177,6 +202,8 @@ abstract class _Payment implements Payment {
 
   @override
   double get paymentAmount;
+  @override
+  String get shoppingCartID;
   @override
   String get cardNumber;
   @override

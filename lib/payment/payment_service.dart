@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:first_week_demo/payment/payment.dart';
+import 'package:first_week_demo/payment/payment_model/payment.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 

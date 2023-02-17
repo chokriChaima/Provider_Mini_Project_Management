@@ -1,15 +1,11 @@
-import 'package:first_week_demo/app_theme/app_buttons.dart';
-import 'package:first_week_demo/configuration/router.dart';
 import 'package:first_week_demo/product/product_list_bloc/product_bloc.dart';
 import 'package:first_week_demo/product/product_list_bloc/product_event.dart';
 import 'package:first_week_demo/product/product_views/product_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
-import '../../app_theme/app_colors.dart';
+import '../../app_theme/bottom_navigation_bar.dart';
 import '../../app_theme/size_presets.dart';
-import '../../app_theme/text_style.dart';
 import '../product_list_bloc/product_state.dart';
 
 class ProductsPage extends StatelessWidget {
@@ -20,43 +16,39 @@ class ProductsPage extends StatelessWidget {
     final SizePresets measures = SizePresets.of(context);
     return SafeArea(
       child: Scaffold(
-          body: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: measures.customWidth(12, context),
-            vertical: measures.customHeight(14, context)),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Product ",
-                  style: AppTextStyle.normalText(size: 40),
-                ),
-                Text(
-                  "List",
-                  style: AppTextStyle.boldText(
-                      size: 40, color: AppColors.mainColor.withOpacity(0.6)),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: measures.customPaddingTop(2.5, context),
-            ),
-            const ProductList(),
-            SizedBox(
-              height: measures.customPaddingTop(7, context),
-            ),
-            AppButton(
-                text: "See Shopping Cart",
-                heightDiv: 15,
-                onPressed: () =>
-                    GoRouter.of(context).push(Routes.shoppingCartView))
-          ],
-        ),
-      )
-          // This trailing comma makes auto-formatting nicer for build methods.
+        body: Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: measures.customWidth(12, context),
+              vertical: measures.customHeight(14, context)),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Product ",
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  Text("List",
+                      style: Theme.of(context).textTheme.headlineLarge),
+                ],
+              ),
+              SizedBox(
+                height: measures.customPaddingTop(2.5, context),
+              ),
+              const ProductList(),
+              SizedBox(
+                height: measures.customPaddingTop(7, context),
+              ),
+            ],
           ),
+        )
+        // This trailing comma makes auto-formatting nicer for build methods.
+        ,
+        bottomNavigationBar: BottomNavigationBarApp(
+          currentIndex: 2,
+        ),
+      ),
     );
   }
 }
@@ -96,7 +88,7 @@ class _ProductListState extends State<ProductList> {
             return Text(
               "No Products Available at The Moment",
               textAlign: TextAlign.center,
-              style: AppTextStyle.normalText(),
+              style: Theme.of(context).textTheme.bodyMedium,
             );
           }
           return ListView.builder(
@@ -114,7 +106,8 @@ class _ProductListState extends State<ProductList> {
           );
         } else {
           return Text("Connection Error",
-              textAlign: TextAlign.center, style: AppTextStyle.normalText());
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium);
         }
       }),
     );

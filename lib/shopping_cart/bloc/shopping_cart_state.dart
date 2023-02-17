@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../shopping_cart.dart';
+import '../shopping_cart_model/shopping_cart.dart';
 
 enum ShoppingCartStatus { success, failure, closed }
 

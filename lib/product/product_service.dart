@@ -3,7 +3,7 @@ import 'package:first_week_demo/configuration/api_links.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 
-import 'product.dart';
+import 'product_model/product.dart';
 
 @Injectable()
 class ProductService {

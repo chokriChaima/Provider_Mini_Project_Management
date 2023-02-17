@@ -8,18 +8,20 @@ part of 'shopping_cart.dart';
 
 _$_ShoppingCart _$$_ShoppingCartFromJson(Map<String, dynamic> json) =>
     _$_ShoppingCart(
-      shoppingCartID: json['shoppingCartID'] as String?,
-      productsInCart: (json['productsInCart'] as List<dynamic>)
+      id: json['id'] as String?,
+      productInfoDTOList: (json['productInfoDTOList'] as List<dynamic>)
           .map((e) => Product.fromJson(e as Map<String, dynamic>))
           .toList(),
-      total: (json['total'] as num).toDouble(),
       paid: json['paid'] as bool,
+      totalPrice: (json['totalPrice'] as num?)?.toDouble(),
+      totalQuantity: json['totalQuantity'] as int?,
     );
 
 Map<String, dynamic> _$$_ShoppingCartToJson(_$_ShoppingCart instance) =>
     <String, dynamic>{
-      'shoppingCartID': instance.shoppingCartID,
-      'productsInCart': instance.productsInCart,
-      'total': instance.total,
+      'id': instance.id,
+      'productInfoDTOList': instance.productInfoDTOList,
       'paid': instance.paid,
+      'totalPrice': instance.totalPrice,
+      'totalQuantity': instance.totalQuantity,
     };

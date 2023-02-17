@@ -1,5 +1,3 @@
-import 'package:first_week_demo/product/product.dart';
-
 abstract class ShoppingCartEvent {}
 
 class ShoppingCartRegistrationButtonPressed extends ShoppingCartEvent {
@@ -11,16 +9,21 @@ class ShoppingCartRegistrationButtonPressed extends ShoppingCartEvent {
 class ShoppingCartCreationButtonPressed extends ShoppingCartEvent {}
 
 class ShoppingCartAddedProduct extends ShoppingCartEvent {
-       final Product product;
-       ShoppingCartAddedProduct(this.product);
+  final String productID;
 
+  ShoppingCartAddedProduct(this.productID);
 }
 
-class ShoppingCartRemovedProduct extends ShoppingCartEvent{
-  final Product product;
-  ShoppingCartRemovedProduct(this.product);
+class ShoppingCartDecrementedProduct extends ShoppingCartEvent {
+  final String productInfoID;
+
+  ShoppingCartDecrementedProduct(this.productInfoID);
 }
 
-class ShoppingCartClosed extends ShoppingCartEvent{
+class ShoppingCartIncrementedProduct extends ShoppingCartEvent {
+  final String productInfoID;
 
+  ShoppingCartIncrementedProduct(this.productInfoID);
 }
+
+class ShoppingCartClosed extends ShoppingCartEvent {}

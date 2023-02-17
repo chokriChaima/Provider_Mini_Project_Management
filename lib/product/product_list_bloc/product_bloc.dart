@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:first_week_demo/product/product.dart';
+import 'package:first_week_demo/product/product_model/product.dart';
 import 'package:first_week_demo/product/product_list_bloc/product_event.dart';
 import 'package:first_week_demo/product/product_list_bloc/product_state.dart';
 import 'package:first_week_demo/product/product_service.dart';

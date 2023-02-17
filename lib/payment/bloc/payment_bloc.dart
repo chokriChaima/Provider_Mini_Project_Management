@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 
-import '../payment.dart';
+import '../payment_model/payment.dart';
 import '../payment_service.dart';
 
 @injectable

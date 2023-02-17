@@ -1,3 +1,4 @@
+import 'package:first_week_demo/app_notifications/app_notifications_view/app_notification_list.dart';
 import 'package:first_week_demo/shopping_cart/shopping_cart_view/shopping_cart_registration_page.dart';
 import 'package:go_router/go_router.dart';
 
@@ -10,16 +11,23 @@ class Routes {
   static const productsPage = "/productsPage";
   static const shoppingCartView = "/shoppingCartView";
   static const purchasePage = "/paymentPage";
+  static const appNotificationView = "/appNotificationView";
 }
 
 final router = GoRouter(routes: [
   GoRoute(
       path: Routes.shoppingCartRegistrationPage,
       builder: (context, state) => ShoppingCartRegistrationPage()),
-  GoRoute(path: Routes.productsPage, builder: (context, state) => const ProductsPage()),
+  GoRoute(
+      path: Routes.productsPage,
+      builder: (context, state) => const ProductsPage()),
   GoRoute(
       path: Routes.shoppingCartView,
-       builder: (context, state) => const ShoppingCartView()),
-  GoRoute(path: Routes.purchasePage, builder: (context, state) => PaymentPage()),
+      builder: (context, state) => const ShoppingCartView()),
+  GoRoute(
+      path: Routes.purchasePage, builder: (context, state) => PaymentPage()),
+  GoRoute(
+      path: Routes.appNotificationView,
+      builder: (context, state) => AppNotificationList()),
   // )
 ]);

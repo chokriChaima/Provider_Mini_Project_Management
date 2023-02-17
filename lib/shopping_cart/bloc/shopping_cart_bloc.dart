@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:first_week_demo/shopping_cart/bloc/shopping_cart_event.dart';
 import 'package:first_week_demo/shopping_cart/bloc/shopping_cart_state.dart';
-import 'package:first_week_demo/shopping_cart/shopping_cart.dart';
+import 'package:first_week_demo/shopping_cart/shopping_cart_model/shopping_cart.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
@@ -19,7 +19,8 @@ class ShoppingCartBloc extends Bloc<ShoppingCartEvent, ShoppingCartState> {
     on<ShoppingCartRegistrationButtonPressed>(registrationEventHandler);
     on<ShoppingCartCreationButtonPressed>(creationEventHandler);
     on<ShoppingCartAddedProduct>(addedProductEventHandler);
-    on<ShoppingCartRemovedProduct>(removedProductEventHandler);
+    on<ShoppingCartDecrementedProduct>(decrementedProductEventHandler);
+    on<ShoppingCartIncrementedProduct>(incrementedProductEventHandler);
     on<ShoppingCartClosed>(closedShoppingCartEventHandler);
   }
 
@@ -53,7 +54,7 @@ class ShoppingCartBloc extends Bloc<ShoppingCartEvent, ShoppingCartState> {
   Future<void> addedProductEventHandler(
       ShoppingCartAddedProduct event, Emitter<ShoppingCartState> emit) async {
     ShoppingCart? result = await _shoppingCartService.addToShoppingCart(
-        event.product, state.currentShoppingCart!.shoppingCartID!);
+        event.productID, state.currentShoppingCart!.id!);
     if (result == null) {
       emit(ShoppingCartState(
           status: ShoppingCartStatus.failure,
@@ -64,10 +65,10 @@ class ShoppingCartBloc extends Bloc<ShoppingCartEvent, ShoppingCartState> {
     }
   }
 
-  Future<void> removedProductEventHandler(
-      ShoppingCartRemovedProduct event, Emitter<ShoppingCartState> emit) async {
-    ShoppingCart? result = await _shoppingCartService.removeFromShoppingCart(
-        event.product, state.currentShoppingCart!.shoppingCartID!);
+  Future<void> decrementedProductEventHandler(
+      ShoppingCartDecrementedProduct event, Emitter<ShoppingCartState> emit) async {
+    ShoppingCart? result = await _shoppingCartService.decrementFromShoppingCart(
+        event.productInfoID, state.currentShoppingCart!.id!);
     if (result == null) {
       emit(ShoppingCartState(
           status: ShoppingCartStatus.failure,
@@ -78,17 +79,26 @@ class ShoppingCartBloc extends Bloc<ShoppingCartEvent, ShoppingCartState> {
     }
   }
 
-  @override
-  void onChange(Change<ShoppingCartState> change) {
-    logger.i("current state ${change.currentState.currentShoppingCart}");
-    logger.i("next state ${change.nextState.currentShoppingCart}");
-    super.onChange(change);
+  Future<void> incrementedProductEventHandler(
+      ShoppingCartIncrementedProduct event, Emitter<ShoppingCartState> emit) async {
+    ShoppingCart? result = await _shoppingCartService.incrementFromShoppingCart(
+        event.productInfoID, state.currentShoppingCart!.id!);
+    if (result == null) {
+      emit(ShoppingCartState(
+          status: ShoppingCartStatus.failure,
+          currentShoppingCart: state.currentShoppingCart));
+    } else {
+      emit(ShoppingCartState(
+          status: ShoppingCartStatus.success, currentShoppingCart: result));
+    }
   }
+
+
 
   FutureOr<void> closedShoppingCartEventHandler(
       ShoppingCartClosed event, Emitter<ShoppingCartState> emit) async {
     ShoppingCart? result = await _shoppingCartService
-        .closeShoppingCart(state.currentShoppingCart!.shoppingCartID!);
+        .closeShoppingCart(state.currentShoppingCart!.id!);
     if (result == null) {
       emit(ShoppingCartState(
           status: ShoppingCartStatus.failure,

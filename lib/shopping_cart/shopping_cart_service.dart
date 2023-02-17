@@ -3,8 +3,7 @@ import 'package:first_week_demo/configuration/api_links.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 
-import '../product/product.dart';
-import 'shopping_cart.dart';
+import 'shopping_cart_model/shopping_cart.dart';
 
 @injectable
 class ShoppingCartService {
@@ -25,12 +24,11 @@ class ShoppingCartService {
     }
   }
 
-  Future<ShoppingCart?> addToShoppingCart(Product product, String id) async {
+  Future<ShoppingCart?> addToShoppingCart(
+      String productID, String cartID) async {
     try {
-      Response response = await dio.put(
-        "${ApiLinks.shoppingCartAddProduct}/$id",
-        data: product.toJson(),
-      );
+      Response response =
+          await dio.put(ApiLinks.shoppingCartAddProduct(cartID, productID));
       return ShoppingCart.fromJson(response.data);
     } catch (e) {
       logger.e("Shopping Cart Put Dio failure : $e");
@@ -38,12 +36,25 @@ class ShoppingCartService {
     }
   }
 
-  Future<ShoppingCart?> removeFromShoppingCart(
-      Product product, String id) async {
+  Future<ShoppingCart?> decrementFromShoppingCart(
+      String productInfoID, String cartID) async {
     try {
       Response response = await dio.put(
-        "${ApiLinks.shoppingCartRemoveProduct}/$id",
-        data: product.toJson(),
+        ApiLinks.shoppingCartDecrementProduct(cartID, productInfoID),
+      );
+
+      return ShoppingCart.fromJson(response.data);
+    } catch (e) {
+      logger.e("Shopping Cart Put Dio failure : $e");
+      return null;
+    }
+  }
+
+  Future<ShoppingCart?> incrementFromShoppingCart(
+      String productInfoID, String cartID) async {
+    try {
+      Response response = await dio.put(
+        ApiLinks.shoppingCartIncrementProduct(cartID, productInfoID),
       );
 
       return ShoppingCart.fromJson(response.data);
@@ -58,7 +69,7 @@ class ShoppingCartService {
       Response response = await dio.put(
         "${ApiLinks.closeShoppingCart}/$id",
       );
-logger.d(ShoppingCart.fromJson(response.data));
+      logger.d(ShoppingCart.fromJson(response.data));
       return ShoppingCart.fromJson(response.data);
     } catch (e) {
       logger.e("Shopping Cart Put Dio failure : $e");

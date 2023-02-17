@@ -5,8 +5,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app_theme/app_colors.dart';
 import '../../../app_theme/size_presets.dart';
-import '../../../app_theme/text_style.dart';
 import '../../app_theme/app_buttons.dart';
+import '../../app_theme/bottom_navigation_bar.dart';
 import '../../app_theme/text_field.dart';
 import '../../shopping_cart/bloc/shopping_cart_bloc.dart';
 import '../../shopping_cart/bloc/shopping_cart_event.dart';
@@ -14,7 +14,7 @@ import '../../shopping_cart/bloc/shopping_cart_state.dart';
 import '../bloc/payment_bloc.dart';
 import '../bloc/payment_event.dart';
 import '../bloc/payment_state.dart';
-import '../payment.dart';
+import '../payment_model/payment.dart';
 
 class PaymentPage extends StatelessWidget {
   PaymentPage({super.key});
@@ -26,12 +26,12 @@ class PaymentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: BlocListener<ShoppingCartBloc, ShoppingCartState>(
-      listener: (_, state) {
-        if (state.status == ShoppingCartStatus.closed) {
-          GoRouter.of(context).go(Routes.shoppingCartRegistrationPage);
-        }
-      },
+      //   child: BlocListener<ShoppingCartBloc, ShoppingCartState>(
+      // listener: (_, state) {
+      //   if (state.status == ShoppingCartStatus.closed) {
+      //     GoRouter.of(context).go(Routes.shoppingCartRegistrationPage);
+      //   }
+      // },
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -46,9 +46,7 @@ class PaymentPage extends StatelessWidget {
           centerTitle: true,
           title: Text(
             "Payment",
-            style: AppTextStyle.boldText(
-              size: 24,
-            ),
+            style: Theme.of(context).textTheme.titleMedium,
           ),
           leading: IconButton(
             onPressed: () => GoRouter.of(context).pop(),
@@ -60,19 +58,21 @@ class PaymentPage extends StatelessWidget {
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(
-              vertical: SizePresets.of(context).customHeight(10, context),
               horizontal: SizePresets.of(context).customWidth(12, context)),
           child: ListView(children: [
+            SizedBox(
+              height: SizePresets.of(context).customHeight(15, context),
+            ),
             Text(
               "Purchase Information ",
-              style: AppTextStyle.normalText(size: 25),
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             SizedBox(
               height: SizePresets.of(context).customPaddingTop(2, context),
             ),
             Text(
               "Total",
-              style: AppTextStyle.normalText(),
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
             SizedBox(
               height: SizePresets.of(context).customPaddingTop(5, context),
@@ -81,15 +81,10 @@ class PaymentPage extends StatelessWidget {
               children: [
                 BlocBuilder<ShoppingCartBloc, ShoppingCartState>(
                     builder: (_, state) => Text(
-                          state.currentShoppingCart!.total.toString(),
-                          style: AppTextStyle.boldText(
-                              size: 29, color: AppColors.mainColor),
+                          state.currentShoppingCart!.totalPrice!.toString(),
+                          style: Theme.of(context).textTheme.headlineLarge,
                         )),
-                Text(
-                  " TDN",
-                  style: AppTextStyle.normalText(
-                      size: 29, color: AppColors.mainColor),
-                ),
+                Text(" TDN", style: Theme.of(context).textTheme.headlineLarge)
               ],
             ),
             SizedBox(
@@ -97,7 +92,7 @@ class PaymentPage extends StatelessWidget {
             ),
             Text(
               "Quantity",
-              style: AppTextStyle.normalText(),
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
             SizedBox(
               height: SizePresets.of(context).customPaddingTop(5, context),
@@ -106,16 +101,12 @@ class PaymentPage extends StatelessWidget {
               children: [
                 BlocBuilder<ShoppingCartBloc, ShoppingCartState>(
                     builder: (_, state) => Text(
-                          state.currentShoppingCart!.productsInCart.length
-                              .toString(),
-                          style: AppTextStyle.boldText(
-                              size: 29, color: AppColors.mainColor),
-                        )),
+                        state.currentShoppingCart!.totalQuantity.toString(),
+                        style: Theme.of(context).textTheme.headlineLarge)),
                 Text(
                   " Products",
-                  style: AppTextStyle.normalText(
-                      size: 26, color: AppColors.mainColor),
-                ),
+                  style: Theme.of(context).textTheme.headlineLarge,
+                )
               ],
             ),
             SizedBox(
@@ -123,7 +114,7 @@ class PaymentPage extends StatelessWidget {
             ),
             Text(
               "Fill The Following Fields ",
-              style: AppTextStyle.normalText(size: 25),
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             SizedBox(
               height: SizePresets.of(context).customPaddingTop(2, context),
@@ -132,6 +123,7 @@ class PaymentPage extends StatelessWidget {
               key: _formKey,
               child: Column(children: [
                 AppTextForm.getTextFormField(
+                    context: context,
                     icon: Icons.perm_identity,
                     hintText: "Enter Card Holder Name",
                     controller: cardHolderName),
@@ -139,49 +131,43 @@ class PaymentPage extends StatelessWidget {
                   height: SizePresets.of(context).customPaddingTop(2, context),
                 ),
                 AppTextForm.getTextFormField(
+                    context: context,
                     icon: Icons.add_card,
                     hintText: "Enter Card Number",
                     controller: cardNumber),
                 SizedBox(
                   height: SizePresets.of(context).customPaddingTop(2, context),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    AppButton(
-                        text: "Cancel",
-                        heightDiv: 15,
-                        widthDiv: 6,
-                        onPressed: () => GoRouter.of(context).pop()),
-                    BlocBuilder<ShoppingCartBloc, ShoppingCartState>(
-                      builder: (_, state) => AppButton(
-                          text: "Done",
-                          heightDiv: 15,
-                          widthDiv: 6,
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              context.read<PaymentBloc>().add(
-                                  PaymentRequestSent(
-                                      payment: Payment(
-                                          paymentAmount:
-                                              state.currentShoppingCart!.total,
-                                          cardHolderName: cardHolderName.text,
-                                          cardNumber: cardNumber.text)));
+                BlocBuilder<ShoppingCartBloc, ShoppingCartState>(
+                  builder: (_, state) => AppButton(
+                      text: "Done",
+                      heightDiv: 15,
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          context.read<PaymentBloc>().add(
+                              PaymentRequestSent(
+                                  payment: Payment(
+                                      shoppingCartID:
+                                          state.currentShoppingCart!.id!,
+                                      paymentAmount: state
+                                          .currentShoppingCart!.totalPrice!,
+                                      cardHolderName: cardHolderName.text,
+                                      cardNumber: cardNumber.text)));
 
-                              showDialog(
-                                  context: context,
-                                  builder: (_) => const PaymentRequestDialog());
-                            }
-                          }),
-                    )
-                  ],
+                          showDialog(
+                              context: context,
+                              builder: (_) => const PaymentRequestDialog());
+                        }
+                      }),
                 )
               ]),
             )
           ]),
         ),
-      ),
-    ));
+       bottomNavigationBar: BottomNavigationBarApp(
+        currentIndex: 3,
+      ),));
+
     // This trailing comma makes auto-formatting nicer for build methods.
   }
 }
@@ -196,40 +182,22 @@ class PaymentRequestDialog extends StatelessWidget {
         width: SizePresets.of(context).customPaddingTop(1, context),
         height: SizePresets.of(context).customPaddingTop(1, context),
         child: Text(
-          " Your Payment Request",
-          style: AppTextStyle.normalText(),
+          "Fake Payment",
+          style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
-      content: BlocConsumer<PaymentBloc, PaymentState>(
-        listener: (_, state) {
-          if (state == PaymentState.success) {
-            context.read<ShoppingCartBloc>().add(ShoppingCartClosed());
-          }
-        },
-        builder: (_, state) {
-          if (state == PaymentState.goingThrough) {
-            return SizedBox(
-              height: SizePresets.of(context).customPaddingTop(1, context),
-              width: SizePresets.of(context).customPaddingTop(1, context),
-              child: const Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          } else if (state == PaymentState.success) {
-            return const Text("Your payment has been successfully processed ");
-          } else {
-            return const Text(
-                "Something went Wrong, your payment was not processed");
-          }
-        },
+      content: Text(
+        "Your Request is Going Through",
+        style: Theme.of(context).textTheme.bodyMedium,
       ),
+
       actions: [
         IconButton(
             icon: const Icon(Icons.done),
             color: AppColors.mainColor,
             iconSize: 28,
             onPressed: () {
-              GoRouter.of(context).pop();
+              GoRouter.of(context).go(Routes.shoppingCartView);
             }),
       ],
     );

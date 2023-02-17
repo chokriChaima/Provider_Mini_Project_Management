@@ -6,7 +6,7 @@ part 'payment.freezed.dart';
 @freezed
 class Payment with _$Payment {
   factory Payment(
-      {required double paymentAmount, required String cardNumber, required String cardHolderName}) = _Payment;
+      {required double paymentAmount, required String shoppingCartID,required String cardNumber, required String cardHolderName}) = _Payment;
 
   factory Payment.fromJson(Map<String, dynamic> json) =>
       _$PaymentFromJson(json);

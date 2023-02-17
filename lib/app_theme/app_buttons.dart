@@ -1,5 +1,4 @@
 import 'package:first_week_demo/app_theme/size_presets.dart';
-import 'package:first_week_demo/app_theme/text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -81,8 +80,7 @@ class AppButton extends StatelessWidget {
           child: Text(
             text,
             textAlign: TextAlign.center,
-            style: AppTextStyle.normalText(
-                color: textColor ?? AppColors.backgroundColor),
+            style: Theme.of(context).textTheme. labelLarge,
           ),
         ));
   }

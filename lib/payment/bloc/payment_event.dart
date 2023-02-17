@@ -1,4 +1,4 @@
-import '../payment.dart';
+import '../payment_model/payment.dart';
 
 abstract class PaymentEvent {
 
