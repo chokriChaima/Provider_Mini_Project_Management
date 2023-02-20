@@ -1,12 +1,12 @@
-import 'package:first_week_demo/product/product_list_bloc/product_bloc.dart';
-import 'package:first_week_demo/product/product_list_bloc/product_event.dart';
 import 'package:first_week_demo/product/product_views/product_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 
 import '../../app_theme/bottom_navigation_bar.dart';
 import '../../app_theme/size_presets.dart';
-import '../product_list_bloc/product_state.dart';
+import '../../configuration/injection.dart';
+import '../../product_management_state.dart';
+import '../../product_management_store.dart';
 
 class ProductsPage extends StatelessWidget {
   const ProductsPage({Key? key}) : super(key: key);
@@ -36,7 +36,9 @@ class ProductsPage extends StatelessWidget {
               SizedBox(
                 height: measures.customPaddingTop(2.5, context),
               ),
-              const ProductList(),
+              ProductList(
+                productManagementStore: getIt.get<ProductManagementStore>(),
+              ),
               SizedBox(
                 height: measures.customPaddingTop(7, context),
               ),
@@ -54,9 +56,9 @@ class ProductsPage extends StatelessWidget {
 }
 
 class ProductList extends StatefulWidget {
-  const ProductList({
-    super.key,
-  });
+  ProductList({super.key, required this.productManagementStore});
+
+  final ProductManagementStore productManagementStore;
 
   @override
   State<ProductList> createState() => _ProductListState();
@@ -65,8 +67,8 @@ class ProductList extends StatefulWidget {
 class _ProductListState extends State<ProductList> {
   @override
   void initState() {
-    context.read<ProductBloc>().add(ProductStarted());
-
+    getIt.get<Logger>().d("inside init product list");
+    widget.productManagementStore.setProducts();
     super.initState();
   }
 
@@ -74,42 +76,46 @@ class _ProductListState extends State<ProductList> {
   Widget build(BuildContext context) {
     final measures = SizePresets.of(context);
     return Expanded(
-      child: BlocBuilder<ProductBloc, ProductState>(builder: (_, productState) {
-        if (productState.productsState == ProductsStates.loading) {
-          return const Center(
-            child: SizedBox(
-              width: 60,
-              height: 60,
-              child: CircularProgressIndicator(),
-            ),
-          );
-        } else if (productState.productsState == ProductsStates.success) {
-          if (productState.products!.isEmpty) {
-            return Text(
-              "No Products Available at The Moment",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium,
-            );
-          }
-          return ListView.builder(
-            itemCount: productState.products!.length,
-            itemBuilder: (_, index) => Column(
-              children: [
-                ProductTile(
-                  product: productState.products!.elementAt(index),
-                ),
-                SizedBox(
-                  height: measures.customHeight(35, context),
-                )
-              ],
-            ),
-          );
-        } else {
-          return Text("Connection Error",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium);
-        }
-      }),
-    );
+        child: StreamBuilder<ProductManagementState>(
+            stream: widget.productManagementStore.state,
+            builder: (BuildContext context,
+                AsyncSnapshot<ProductManagementState> snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text("Connection Error",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyMedium),
+                );
+              } else if (snapshot.hasData && snapshot.data!.products != null) {
+                if (snapshot.data!.products!.isEmpty) {
+                  return Text(
+                    "No Products Available at The Moment",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  );
+                }
+                return ListView.builder(
+                  itemCount: snapshot.data!.products!.length,
+                  itemBuilder: (_, index) => Column(
+                    children: [
+                      ProductTile(
+                        product: snapshot.data!.products!.elementAt(index),
+                      ),
+                      SizedBox(
+                        height: measures.customHeight(35, context),
+                      )
+                    ],
+                  ),
+                );
+              } else {
+                return const Center(
+                  child: SizedBox(
+                    width: 60,
+                    height: 60,
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+            }));
   }
 }

@@ -3,10 +3,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:first_week_demo/app_notifications/bloc/app_notification_bloc.dart';
 import 'package:first_week_demo/app_theme/size_presets.dart';
 import 'package:first_week_demo/configuration/injection.dart';
-import 'package:first_week_demo/configuration/localNotificationConfiguration.dart';
+import 'package:first_week_demo/configuration/local_notification_configuration.dart';
 import 'package:first_week_demo/configuration/router.dart';
 import 'package:first_week_demo/payment/bloc/payment_bloc.dart';
-import 'package:first_week_demo/product/product_list_bloc/product_bloc.dart';
 import 'package:first_week_demo/shopping_cart/bloc/shopping_cart_bloc.dart';
 import 'package:first_week_demo/app_theme/app_theme_data.dart';
 import 'package:first_week_demo/user_preferences/bloc/user_preferences_bloc.dart';
@@ -24,11 +23,7 @@ Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
-  // await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-  //   alert: true, // Required to display a heads up notification
-  //   badge: true,
-  //   sound: true,
-  // );
+
   NotificationService.initialize();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -45,9 +40,7 @@ Future<void> main() async {
 
   runApp(MultiBlocProvider(
     providers: [
-      BlocProvider<ProductBloc>(
-        create: (_) => getIt.get<ProductBloc>(),
-      ),
+
       BlocProvider<AppNotificationBloc>(
         create: (_) => getIt.get<AppNotificationBloc>(),
       ),

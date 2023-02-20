@@ -1,6 +1,7 @@
 import 'package:first_week_demo/app_theme/app_buttons.dart';
 import 'package:first_week_demo/app_theme/size_presets.dart';
 import 'package:first_week_demo/configuration/router.dart';
+import 'package:first_week_demo/product_management_store.dart';
 import 'package:first_week_demo/shopping_cart/bloc/shopping_cart_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +11,7 @@ import 'package:go_router/go_router.dart';
 import '../../app_notifications/bloc/app_notification_bloc.dart';
 import '../../app_notifications/bloc/app_notification_event.dart';
 import '../../app_theme/text_field.dart';
+import '../../configuration/injection.dart';
 import '../bloc/shopping_cart_bloc.dart';
 import '../bloc/shopping_cart_state.dart';
 
@@ -34,9 +36,8 @@ class ShoppingCartRegistrationPage extends StatelessWidget {
                 );
               }
               if (shoppingCartState.status == ShoppingCartStatus.success) {
-                context
-                    .read<AppNotificationBloc>()
-                    .add(AppNotificationSet(shoppingCartState.currentShoppingCart!.id!));
+                context.read<AppNotificationBloc>().add(AppNotificationSet(
+                    shoppingCartState.currentShoppingCart!.id!));
                 GoRouter.of(context).push(Routes.shoppingCartView);
               }
               if (shoppingCartState.status == ShoppingCartStatus.closed) {
@@ -70,9 +71,18 @@ class ShoppingCartRegistrationPage extends StatelessWidget {
                   }),
               AppButton(
                   text: "Enter App",
-                  onPressed: () {
-                    context.read<ShoppingCartBloc>().add(
-                        ShoppingCartRegistrationButtonPressed(controller.text));
+                  onPressed: () async {
+                    var result = await getIt
+                        .get<ProductManagementStore>()
+                        .registerCart(controller.text);
+                    if (result) {
+                      GoRouter.of(context).push(Routes.shoppingCartView);
+                    } else {
+                      controller.clear();
+                      Fluttertoast.showToast(
+                        msg: "Shopping Cart Doses not Exist",
+                      );
+                    }
                   }),
               SizedBox(
                   height: SizePresets.of(context).customHeight(12, context)),

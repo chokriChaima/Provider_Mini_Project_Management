@@ -13,9 +13,8 @@ import 'package:first_week_demo/app_notifications/bloc/app_notification_bloc.dar
 import 'package:first_week_demo/configuration/injection.dart' as _i14;
 import 'package:first_week_demo/payment/bloc/payment_bloc.dart' as _i10;
 import 'package:first_week_demo/payment/payment_service.dart' as _i5;
-import 'package:first_week_demo/product/product_list_bloc/product_bloc.dart'
-    as _i11;
 import 'package:first_week_demo/product/product_service.dart' as _i6;
+import 'package:first_week_demo/product_management_store.dart' as _i11;
 import 'package:first_week_demo/shopping_cart/bloc/shopping_cart_bloc.dart'
     as _i12;
 import 'package:first_week_demo/shopping_cart/shopping_cart_service.dart'
@@ -63,8 +62,12 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i5.PaymentService>(),
           gh<_i4.Logger>(),
         ));
-    gh.factory<_i11.ProductBloc>(
-        () => _i11.ProductBloc(gh<_i6.ProductService>()));
+    gh.factory<_i11.ProductManagementStore>(() => _i11.ProductManagementStore(
+          gh<_i6.ProductService>(),
+          gh<_i4.Logger>(),
+          gh<_i9.AppNotificationService>(),
+          gh<_i7.ShoppingCartService>(),
+        ));
     gh.factory<_i12.ShoppingCartBloc>(() => _i12.ShoppingCartBloc(
           gh<_i7.ShoppingCartService>(),
           gh<_i4.Logger>(),
