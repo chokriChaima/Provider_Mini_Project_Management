@@ -14,41 +14,13 @@
       },
       "oauth_client": [
         {
-          "client_id": "2860583665-u50upp7v56mpolfvo8imqm84a7vqm8fu.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyASI61ePI15LiE-JFbQywAcd3YMuF55Sok"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "2860583665-u50upp7v56mpolfvo8imqm84a7vqm8fu.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "2860583665-ps5885b5d4gr41n549kdurj2jq0sm3lf.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.firstWeekDemo"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:2860583665:android:ec4ec3f229d5ff3b7eb750",
-        "android_client_info": {
-          "package_name": "com.softparadigm.productManagement"
-        }
-      },
-      "oauth_client": [
+          "client_id": "2860583665-4oo3qcadhc5fsdmsfermnn8cv09e2th9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.first_week_demo",
+            "certificate_hash": "029e77cc846d121510cd4978d75e6046c13d02e5"
+          }
+        },
         {
           "client_id": "2860583665-u50upp7v56mpolfvo8imqm84a7vqm8fu.apps.googleusercontent.com",
           "client_type": 3
