@@ -19,37 +19,25 @@ class FacebookService {
 
   void logOutProcess() async => await FacebookAuth.instance.logOut();
 
-  Future<bool> logInAsFacebookUser() async {
+  Future<String?> logInAsFacebookUser() async {
     LoginResult loginResult = await _loginProcess();
     if (loginResult.status == LoginStatus.success) {
-      _authenticateFacebookUser(loginResult.accessToken!.token);
+      return _authenticateFacebookUser(loginResult.accessToken!.token);
     }
     //TO-DO
     //Change this to make respond with the request's response
-    return loginResult.status == LoginStatus.success;
+    return null;
   }
 
-  Future<bool> _addFacebookUserToDB(String accessToken) async {
-    logger.e("The current Facebook User Access Token is $accessToken");
-    try {
-      Response response = await dio.post(
-          dio.options.baseUrl + authenticateFacebookUserLink,
-          data: accessToken);
-
-      return true;
-    } on DioError catch (e) {
-      logger.e("Dio Failed $e");
-      return false;
-    }
-  }
-
-  void _authenticateFacebookUser(String token) async {
+  Future<String?> _authenticateFacebookUser(String token) async {
     try {
       Response response = await dio.post(
           dio.options.baseUrl + authenticateFacebookUserLink,
           data: token);
+      return response.data;
     } on DioError catch (e) {
       logger.e("Dio Failed $e");
+      return null;
     }
   }
 }

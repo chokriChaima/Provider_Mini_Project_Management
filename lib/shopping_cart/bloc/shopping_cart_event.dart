@@ -1,12 +1,11 @@
 abstract class ShoppingCartEvent {}
 
-class ShoppingCartRegistrationButtonPressed extends ShoppingCartEvent {
-  final String id;
+class ShoppingCartStarted extends ShoppingCartEvent {
+  final String data;
 
-  ShoppingCartRegistrationButtonPressed(this.id);
+  ShoppingCartStarted(this.data);
 }
 
-class ShoppingCartCreationButtonPressed extends ShoppingCartEvent {}
 
 class ShoppingCartAddedProduct extends ShoppingCartEvent {
   final String productID;

@@ -58,11 +58,12 @@ class PaymentPage extends StatelessWidget {
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(
+            vertical:
+             SizePresets.of(context).customHeight(30, context),
+
               horizontal: SizePresets.of(context).customWidth(12, context)),
           child: ListView(children: [
-            SizedBox(
-              height: SizePresets.of(context).customHeight(15, context),
-            ),
+
             Text(
               "Purchase Information ",
               style: Theme.of(context).textTheme.bodyLarge,
@@ -122,7 +123,7 @@ class PaymentPage extends StatelessWidget {
             Form(
               key: _formKey,
               child: Column(children: [
-                AppTextForm.getTextFormField(
+                AppTextFormField(
                     context: context,
                     icon: Icons.perm_identity,
                     hintText: "Enter Card Holder Name",
@@ -130,7 +131,7 @@ class PaymentPage extends StatelessWidget {
                 SizedBox(
                   height: SizePresets.of(context).customPaddingTop(2, context),
                 ),
-                AppTextForm.getTextFormField(
+                AppTextFormField(
                     context: context,
                     icon: Icons.add_card,
                     hintText: "Enter Card Number",

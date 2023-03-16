@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:first_week_demo/configuration/api_links.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 
@@ -7,6 +6,8 @@ import 'product_model/product.dart';
 
 @Injectable()
 class ProductService {
+
+  static String productMain = "/products";
   Dio dio;
 
   Logger logger;
@@ -15,7 +16,7 @@ class ProductService {
 
   Future<List<Product>?> getProducts() async {
     try {
-      Response response = await dio.get(ApiLinks.productMain);
+      Response response = await dio.get(dio.options.baseUrl+productMain);
 
       return List<Product>.from(response.data.map((e) => Product.fromJson(e)));
     } on DioError catch (e) {

@@ -39,6 +39,9 @@ class ProductTile extends StatelessWidget {
           Text("  TDN", style: Theme.of(context).textTheme.headlineMedium),
         ],
       ),
+
+
+
       trailing: BlocBuilder<ShoppingCartBloc, ShoppingCartState>(
         builder: (_, state) {
           if (!state.currentShoppingCart!.productInfoDTOList

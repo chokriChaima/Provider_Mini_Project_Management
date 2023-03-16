@@ -23,6 +23,13 @@ class AppThemes {
   static TextTheme textTheme({bool
       isDark = false}) {
     return TextTheme(
+      labelMedium: TextStyle(
+        fontWeight: FontWeight.normal,
+        fontSize: 22,
+        letterSpacing: 0.2,
+        height: 0.9,
+        color: AppColors.mainColor,
+      ),
       labelLarge: TextStyle(
         fontWeight: FontWeight.normal,
         fontSize: 22,
@@ -45,6 +52,14 @@ class AppThemes {
          height: 0.9,
          color: AppColors.mainColor,
        ) ,
+
+        headlineSmall:TextStyle(
+         fontWeight: FontWeight.bold,
+         fontSize: 20,
+         letterSpacing: 0.1,
+         height: 0.9,
+         color: AppColors.mainColor,
+       ) ,
         bodyLarge: TextStyle(
 
           fontWeight: FontWeight.normal,
@@ -61,8 +76,8 @@ class AppThemes {
           color: isDark ? AppColors.backgroundColor :AppColors.darkColor,
         ),
         bodySmall: TextStyle(
-          fontWeight: FontWeight.w300,
-          fontSize: 17,
+          fontWeight: FontWeight.normal,
+          fontSize: 16,
           letterSpacing: 0.1,
           height: 0.9,
           color: isDark ? AppColors.backgroundColor :AppColors.darkColor,

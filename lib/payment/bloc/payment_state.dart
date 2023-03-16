@@ -1,11 +1,7 @@
-import 'package:flutter/cupertino.dart';
 
-enum PaymentState {
-  initial,
-  goingThrough,
-  failure,
-  success,
+class PaymentState {
+  String? jsonToken;
+
+  PaymentState({this.jsonToken});
 }
-
 //only going_through remains
-

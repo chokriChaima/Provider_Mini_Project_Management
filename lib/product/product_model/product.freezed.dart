@@ -21,13 +21,19 @@ Product _$ProductFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Product {
   String get productID => throw _privateConstructorUsedError;
+
   String? get productInfoID => throw _privateConstructorUsedError;
+
   String get productName => throw _privateConstructorUsedError;
+
   double get productPrice => throw _privateConstructorUsedError;
+
   int? get quantity => throw _privateConstructorUsedError;
+
   double? get totalPrice => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
   @JsonKey(ignore: true)
   $ProductCopyWith<Product> get copyWith => throw _privateConstructorUsedError;
 }
@@ -36,6 +42,7 @@ mixin _$Product {
 abstract class $ProductCopyWith<$Res> {
   factory $ProductCopyWith(Product value, $Res Function(Product) then) =
       _$ProductCopyWithImpl<$Res, Product>;
+
   @useResult
   $Res call(
       {String productID,
@@ -53,6 +60,7 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
 
   // ignore: unused_field
   final $Val _value;
+
   // ignore: unused_field
   final $Res Function($Val) _then;
 
@@ -100,6 +108,7 @@ abstract class _$$_ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
   factory _$$_ProductCopyWith(
           _$_Product value, $Res Function(_$_Product) then) =
       __$$_ProductCopyWithImpl<$Res>;
+
   @override
   @useResult
   $Res call(
@@ -195,17 +204,7 @@ class _$_Product implements _Product {
         (other.runtimeType == runtimeType &&
             other is _$_Product &&
             (identical(other.productID, productID) ||
-                other.productID == productID) &&
-            (identical(other.productInfoID, productInfoID) ||
-                other.productInfoID == productInfoID) &&
-            (identical(other.productName, productName) ||
-                other.productName == productName) &&
-            (identical(other.productPrice, productPrice) ||
-                other.productPrice == productPrice) &&
-            (identical(other.quantity, quantity) ||
-                other.quantity == quantity) &&
-            (identical(other.totalPrice, totalPrice) ||
-                other.totalPrice == totalPrice));
+                other.productID == productID));
   }
 
   @JsonKey(ignore: true)
@@ -240,16 +239,22 @@ abstract class _Product implements Product {
 
   @override
   String get productID;
+
   @override
   String? get productInfoID;
+
   @override
   String get productName;
+
   @override
   double get productPrice;
+
   @override
   int? get quantity;
+
   @override
   double? get totalPrice;
+
   @override
   @JsonKey(ignore: true)
   _$$_ProductCopyWith<_$_Product> get copyWith =>

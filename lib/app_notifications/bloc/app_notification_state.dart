@@ -12,9 +12,9 @@ enum AppNotificationStatus {
 @immutable
 class AppNotificationState {
   final AppNotificationStatus appNotificationStatus ;
-  final String? cartID ;
   final List<AppNotification>? appNotificationsList ;
+  final String? data ;
 
-  const AppNotificationState({this.appNotificationsList ,required this.appNotificationStatus,this.cartID});
+  const AppNotificationState({this.appNotificationsList ,required this.appNotificationStatus,this.data});
 }
 

@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:first_week_demo/configuration/api_links.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 
@@ -11,24 +10,28 @@ class ShoppingCartService {
 
   Logger logger;
 
+  static String shoppingCartMain = "/secure/shopping-cart";
+
+  static String shoppingCartAddProduct(String productID) =>
+      "$shoppingCartMain/addProduct?productID=$productID";
+
+  static String shoppingCartDecrementProduct(
+         String productInfoID) =>
+      "$shoppingCartMain/decrementProduct?productInfoID=$productInfoID";
+
+  static String shoppingCartIncrementProduct(
+       String productInfoID) =>
+      "$shoppingCartMain/incrementProduct?productInfoID=$productInfoID";
+
   ShoppingCartService(this.dio, this.logger);
 
-  Future<List<ShoppingCart>?> getShoppingCarts() async {
-    try {
-      Response response = await dio.get(ApiLinks.shoppingCartMain);
 
-      return List<ShoppingCart>.of(response.data.map((e) => e.fromJson()));
-    } catch (e) {
-      logger.e("Get Shopping Carts failed : $e");
-      return null;
-    }
-  }
 
   Future<ShoppingCart?> addToShoppingCart(
-      String productID, String cartID) async {
+      String productID) async {
     try {
-      Response response =
-          await dio.put(ApiLinks.shoppingCartAddProduct(cartID, productID));
+      Response response = await dio
+          .put(dio.options.baseUrl + shoppingCartAddProduct(productID));
       return ShoppingCart.fromJson(response.data);
     } catch (e) {
       logger.e("Shopping Cart Put Dio failure : $e");
@@ -37,10 +40,11 @@ class ShoppingCartService {
   }
 
   Future<ShoppingCart?> decrementFromShoppingCart(
-      String productInfoID, String cartID) async {
+      String productInfoID) async {
     try {
       Response response = await dio.put(
-        ApiLinks.shoppingCartDecrementProduct(cartID, productInfoID),
+        dio.options.baseUrl +
+            shoppingCartDecrementProduct(productInfoID),
       );
 
       return ShoppingCart.fromJson(response.data);
@@ -51,10 +55,11 @@ class ShoppingCartService {
   }
 
   Future<ShoppingCart?> incrementFromShoppingCart(
-      String productInfoID, String cartID) async {
+      String productInfoID) async {
     try {
       Response response = await dio.put(
-        ApiLinks.shoppingCartIncrementProduct(cartID, productInfoID),
+        dio.options.baseUrl +
+            shoppingCartIncrementProduct(productInfoID),
       );
 
       return ShoppingCart.fromJson(response.data);
@@ -67,7 +72,7 @@ class ShoppingCartService {
   Future<ShoppingCart?> closeShoppingCart(String id) async {
     try {
       Response response = await dio.put(
-        "${ApiLinks.closeShoppingCart}/$id",
+        "${dio.options.baseUrl + shoppingCartMain}/closeShoppingCart}/$id",
       );
       logger.d(ShoppingCart.fromJson(response.data));
       return ShoppingCart.fromJson(response.data);
@@ -77,28 +82,19 @@ class ShoppingCartService {
     }
   }
 
-  Future<ShoppingCart?> getById(String id) async {
-    try {
-      Response response = await dio.get("${ApiLinks.shoppingCartMain}/$id");
+  Future<ShoppingCart?> getByJsonToken(String jsonToken) async {
+    dio.options.headers["Authorization"] = "Bearer $jsonToken";
 
+    try {
+
+      Response response =
+          await dio.get(dio.options.baseUrl + shoppingCartMain);
+      logger.i("result  $response");
       return ShoppingCart.fromJson(response.data);
     } catch (e) {
-      logger.e("Get Cart BY ID failed $e");
+      logger.e("Get Cart For User failed $e");
       return null;
     }
   }
 
-  Future<ShoppingCart?> post() async {
-    try {
-      Response response = await dio.post(
-        ApiLinks.shoppingCartMain,
-        data: {},
-      );
-
-      return ShoppingCart.fromJson(response.data);
-    } catch (e) {
-      logger.e("Shopping Cart Post Failed with error : $e");
-      return null;
-    }
-  }
 }

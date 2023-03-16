@@ -24,30 +24,30 @@ class AppNotificationBloc
 
   Future<void> mapReloadEventToState(
       AppNotificationReload event, Emitter<AppNotificationState> emit) async {
-      getIt.get<Logger>().d("notification event cart_id ${state.cartID}");
 
-      List<AppNotification>? response = await _appNotificationService
-          .getAppNotificationsForCart(state.cartID!);
+    List<AppNotification>? response =
+        await _appNotificationService.getAppNotificationsForCart(state.data!);
 
-      getIt.get<Logger>().d("notification event result  $response");
+    getIt.get<Logger>().d("notification event result  $response");
 
-      if (response != null) {
-        emit(AppNotificationState(
-            appNotificationsList: response,
-            cartID: state.cartID!,
-            appNotificationStatus: AppNotificationStatus.success));
-      } else {
-        emit(AppNotificationState(
-            appNotificationsList: state.appNotificationsList,
-            cartID: state.cartID!,
-            appNotificationStatus: AppNotificationStatus.failure));
-      }
+    if (response != null) {
+      emit(AppNotificationState(
+          appNotificationsList: response,
+          data: state.data,
+          appNotificationStatus: AppNotificationStatus.success));
+    } else {
+      emit(AppNotificationState(
+          appNotificationsList: state.appNotificationsList,
+          data: state.data,
+          appNotificationStatus: AppNotificationStatus.failure));
     }
+  }
 
-  FutureOr<void> mapSetEventToState(AppNotificationSet event, Emitter<AppNotificationState> emit) {
-    emit(AppNotificationState(cartID: event.cartID, appNotificationStatus: AppNotificationStatus.loading));
+  FutureOr<void> mapSetEventToState(
+      AppNotificationSet event, Emitter<AppNotificationState> emit) {
+    emit(AppNotificationState(
+        appNotificationStatus: AppNotificationStatus.loading,data: event.data));
 
     AppNotificationReload();
-
-}
+  }
 }

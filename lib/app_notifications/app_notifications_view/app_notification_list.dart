@@ -1,14 +1,11 @@
 import 'package:first_week_demo/app_theme/size_presets.dart';
-import 'package:first_week_demo/shopping_cart/bloc/shopping_cart_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:logger/logger.dart';
 
 import '../../app_theme/app_colors.dart';
 import '../../app_theme/bottom_navigation_bar.dart';
-import '../../configuration/injection.dart';
-import '../../shopping_cart/bloc/shopping_cart_bloc.dart';
+
 import '../bloc/app_notification_bloc.dart';
 import '../bloc/app_notification_event.dart';
 import '../bloc/app_notification_state.dart';

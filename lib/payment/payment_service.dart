@@ -3,20 +3,20 @@ import 'package:first_week_demo/payment/payment_model/payment.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 
-import '../configuration/api_links.dart';
-
 @injectable
 class PaymentService {
   final Dio dio;
 
   final Logger logger;
+  static String addPaymentLink = "/secure/payment/addPayment";
 
   PaymentService(this.logger, this.dio);
 
-  Future<Payment?> post(Payment newPayment) async {
+  Future<Payment?> post(Payment newPayment, String jsonToken) async {
+    dio.options.headers["Authorization"] = "Bearer $jsonToken";
     try {
       Response response = await dio.post(
-        ApiLinks.addPaymentLink,
+        dio.options.baseUrl + addPaymentLink,
         data: newPayment.toJson(),
       );
 
